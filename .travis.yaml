@@ -2,6 +2,7 @@ sudo: required
 services:
     - docker
 before_install:
+    # yarn create react-app fib-app 
     - docker build -t danbo62/react-test -f ./fib-app/Dockerfile.dev ./fib-app
 
 script:
