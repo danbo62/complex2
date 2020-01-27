@@ -1,0 +1,37 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+        "name": "fib-app", 
+        "image": "danbo62/multi-fibApp:latest",
+        "hostname": "fib-app",
+        "essential": false
+        },
+        {
+        "name": "server", 
+        "image": "danbo62/multi-server:latest",
+        "hostname": "api",
+        "essential": false
+        },
+        {
+        "name": "worker", 
+        "image": "danbo62/multi-worker:latest",
+        "hostname": "api",
+        "essential": false 
+        },
+        {
+        "name": "nginx", 
+        "image": "danbo62/multi-nginx:latest",
+        "hostname": "nginx",
+        "essential": true,
+        "portMappings": [
+            {
+                "hostPort": 80,
+                "containerPort": 80
+            }
+        ],
+        "links": ["fib-app", "server"]
+        }
+    ]
+
+}

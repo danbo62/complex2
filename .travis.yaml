@@ -13,12 +13,12 @@ after_sucess:
     - docker build -t danbo62/complex2:nginx ./nginx
     - docker build -t danbo62/complex2:server ./server
     - docker build -t danbo62/complex2:worker ./worker
-    # Log in to danbo62 docker CLI, NOTE: user/pwd encryted and stored in my Travis-CI.
+    # Log in to danbo62 docker CLI, NOTE: user/pwd encryted and stored in my Travis-CI as Vars.
     - echo "$DOCKER-PWD" | docker login -u "$DOCKER-ID" --password-stdin
-    # Now push images to danbo62 DockerHub; docker push danbo62/complex2:tagname
-    - docker push danbo62/complex2:fib-app # pusing the build tags -t
-    - docker push danbo62/complex2:nginx
-    - docker push danbo62/complex2:server
-    - docker push danbo62/complex2:worker
+    # Now push images to danbo62 DockerHub; docker push danbo62/<repoName>:tagname ; using default latest
+    - docker push danbo62/multi-fibApp:latest # pushing the images to Dockerhub
+    - docker push danbo62/multi-nginx:latest
+    - docker push danbo62/multi-server:latest
+    - docker push danbo62/multi-worker:latest
 
 
