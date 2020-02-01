@@ -1,5 +1,5 @@
 # Ref: https://config.travis-ci.com/
-# sudo: required  ; Depreciated see Ref
+sudo: required  # Depreciated according to Ref
 # version: 1.0  # Beta Opt-In ; new Travis Build Config Validation ; Requires secure API keys
 os: linux   # This is default
 # dist: bionic ; Not needed for training images.
