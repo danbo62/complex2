@@ -3,16 +3,23 @@ services:
     - docker
 before_install:
     # yarn create react-app fib-app 
+    # NOTE: Travis-CI runs this file, therefor this is the "root Path".
+    #       Project path is relative!
     - docker build -t danbo62/react-test -f ./fib-app/Dockerfile.dev ./fib-app
 
-script:
+script: # This is the main test section
     - docker run danbo62/react-test yarn test -- --coverage
 
 after_sucess:
-    - docker build -t danbo62/complex2:fib-app ./fib-app
-    - docker build -t danbo62/complex2:nginx ./nginx
-    - docker build -t danbo62/complex2:server ./server
-    - docker build -t danbo62/complex2:worker ./worker
+    # build the production images and send to your DockerHub Repo
+    # Format below means:
+        # no -f override so use default prod Dockerfile
+        # -t <DockerID/Reponame-image> ; Must be created on Dockerhub !
+        # ./<build context>
+    - docker build -t danbo62/multi-fib-app ./fib-app
+    - docker build -t danbo62/multi-nginx ./nginx
+    - docker build -t danbo62/multi-server ./server
+    - docker build -t danbo62/multi-worker ./worker
     # Log in to danbo62 docker CLI, NOTE: user/pwd encryted and stored in my Travis-CI as Vars.
     - echo "$DOCKER-PWD" | docker login -u "$DOCKER-ID" --password-stdin
     # Now push images to danbo62 DockerHub; docker push danbo62/<repoName>:tagname ; using default latest
