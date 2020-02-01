@@ -1,4 +1,10 @@
-sudo: required
+# Ref: https://config.travis-ci.com/
+# sudo: required  ; Depreciated see Ref
+version: 1.0  # Beta Opt-In ; trying new Travis Build Config Validation
+os: linux   # This is default
+# dist: bionic ; Not needed for training images.
+language: java
+    
 services:
     - docker
 before_install:
@@ -22,7 +28,7 @@ after_sucess:
     - docker build -t danbo62/multi-worker ./worker
     # Log in to danbo62 docker CLI, NOTE: user/pwd encryted and stored in my Travis-CI as Vars.
     # Travis-CI requires and escape char "\" for $VAR.
-    - echo "\$DOCKER-PWD" | docker login -u "\$DOCKER-ID" --password-stdin
+     - echo "\$DOCKER-PWD" | docker login -u "\$DOCKER-ID" --password-stdin # Not secure!
     # Now push images to danbo62 DockerHub; docker push danbo62/<repoName>:tagname ; using default latest
     - docker push danbo62/multi-fibApp:latest # pushing the images to Dockerhub
     - docker push danbo62/multi-nginx:latest
