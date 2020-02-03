@@ -1,8 +1,8 @@
 # Ref: https://config.travis-ci.com/
 sudo: required  # Depreciated according to Ref
-# version: 1.0  # Beta Opt-In ; new Travis Build Config Validation ; Requires secure API keys
+# version: 1.0  # Beta Opt-In ; Travis Build Config Validation ; Requires secure API keys
 os: linux   # This is default
-# dist: bionic ; Not needed for training images.
+dist: bionic ;
 language: java
     
 services:
@@ -28,11 +28,26 @@ after_sucess:
     - docker build -t danbo62/multi-worker ./worker
     # Log in to danbo62 docker CLI, NOTE: user/pwd encryted and stored in my Travis-CI as Vars.
     # Travis-CI requires and escape char "\" for $VAR.
-     - echo "\$DOCKER-PWD" | docker login -u "\$DOCKER-ID" --password-stdin # Not secure!
+     - echo "$DOCKER-PWD" | docker login -u "$DOCKER-ID" --password-stdin # Not secure!
     # Now push images to danbo62 DockerHub; docker push danbo62/<repoName>:tagname ; using default latest
     - docker push danbo62/multi-fibApp:latest # pushing the images to Dockerhub
     - docker push danbo62/multi-nginx:latest
     - docker push danbo62/multi-server:latest
     - docker push danbo62/multi-worker:latest
+
+    deploy:
+        provider: elasticbeanstalk
+        region: us-west-1
+        app: multi-docker
+        env: MultiDocker-env
+        bucket_name: elasticbeanstalk-us-west-2-923435484303
+        bucket_path: docker-multi
+        on:
+            branch: master
+        access_key_id: $AWS_ACCESS_KEY
+        secret_access_key: $AWS_SECRET_KEY
+
+
+
 
 

@@ -19,7 +19,7 @@ services:
             - PGDATABASE=postgres
             - PGPASSWORD=postgres_password
             - PGPORT=5432
-    fib-app:  # aka client
+    fib-app:  # aka client, This also defines a hostname used by Dockerrun.aws.json
         build:
             dockerfile:  Dockerfile.dev
             context:  ./fib-app
