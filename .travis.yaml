@@ -1,6 +1,5 @@
-# Ref: https://config.travis-ci.com/
-sudo: required  # Depreciated according to Ref
-# version: 1.0  # Beta Opt-In ; Travis Build Config Validation ; Requires secure API keys
+# Ref: https://config.travis-ci.com/ ; sudo no longer needed.
+version: ">= 1.0.0"  # Beta Opt-In ; Travis Build Config Validation ; Requires secure API keys
 os: linux   # This is default
 dist: bionic ;
 language: java
@@ -22,10 +21,10 @@ after_sucess:
         # no -f override so use default prod Dockerfile
         # -t <DockerID/Reponame-image> ; Must be created on Dockerhub !
         # ./<build context>
-    - docker build -t danbo62/multi-fib-app ./fib-app
-    - docker build -t danbo62/multi-nginx ./nginx
-    - docker build -t danbo62/multi-server ./server
-    - docker build -t danbo62/multi-worker ./worker
+    docker build -t danbo62/multi-fib-app ./fib-app
+    docker build -t danbo62/multi-nginx ./nginx
+    docker build -t danbo62/multi-server ./server
+    docker build -t danbo62/multi-worker ./worker
     # Log in to danbo62 docker CLI, NOTE: user/pwd encryted and stored in my Travis-CI as Vars.
     # Travis-CI requires and escape char "\" for $VAR.
      - echo "$DOCKER-PWD" | docker login -u "$DOCKER-ID" --password-stdin # Not secure!
@@ -46,8 +45,3 @@ after_sucess:
             branch: master
         access_key_id: $AWS_ACCESS_KEY
         secret_access_key: $AWS_SECRET_KEY
-
-
-
-
-
