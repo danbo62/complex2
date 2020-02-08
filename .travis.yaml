@@ -30,7 +30,7 @@ after_sucess:
     # Travis-CI requires and escape char "\" for $VAR.
      - echo "$DOCKER-PWD" | docker login -u "$DOCKER-ID" --password-stdin # Not secure!
     # Now push images to danbo62 DockerHub; docker push danbo62/<repoName>:tagname ; using default latest
-    - docker push danbo62/multi-fibApp:latest # pushing the images to Dockerhub
+    - docker push danbo62/multi-fib-app:latest # pushing the images to Dockerhub
     - docker push danbo62/multi-nginx:latest
     - docker push danbo62/multi-server:latest
     - docker push danbo62/multi-worker:latest
