@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
         "name": "fib-app", 
-        "image": "danbo62/multi-fibApp:latest",
+        "image": "danbo62/multi-fibapp:latest",
         "hostname": "fib-app",
         "essential": false,
         "memory": 128
