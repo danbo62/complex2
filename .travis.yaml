@@ -29,7 +29,7 @@ after_sucess:
     - docker build -t danbo62/multi-worker ./worker
     # Log in to danbo62 docker CLI, NOTE: user/pwd encryted and stored in my Travis-CI as Vars.
     # Travis-CI requires and escape char "\" for $VAR.
-    - echo "$DOCKER-PWD" | docker login -u "$DOCKER-ID" --password-stdin # Not secure!
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin # Not secure!
     # Now push images to danbo62 DockerHub; docker push danbo62/<repoName>:tagname ; using default latest
     - docker push danbo62/multi-fib-app:latest # pushing the images to Dockerhub
     - docker push danbo62/multi-nginx:latest
