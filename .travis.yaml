@@ -1,5 +1,6 @@
 # Ref: https://config.travis-ci.com/ ; sudo no longer needed.
-version: ">= 1.0.0"  # Beta Opt-In ; Travis Build Config Validation ; Requires secure API keys
+# NOTE: API v3 now availble but requires Token access.
+version: ~> 1.0  # Beta Opt-In ; Travis Build Config Validation
 os: linux   # This is default
 dist: bionic ;
 language: java
@@ -13,6 +14,7 @@ before_install:
     - docker build -t danbo62/react-test -f ./fib-app/Dockerfile.dev ./fib-app
 
 script: # This is the main test section
+    - docker ps -a
     - docker run danbo62/react-test yarn test -- --coverage
 
 after_sucess:
@@ -21,27 +23,28 @@ after_sucess:
         # no -f override so use default prod Dockerfile
         # -t <DockerID/Reponame-image> ; Must be created on Dockerhub !
         # ./<build context>
-    docker build -t danbo62/multi-fib-app ./fib-app
-    docker build -t danbo62/multi-nginx ./nginx
-    docker build -t danbo62/multi-server ./server
-    docker build -t danbo62/multi-worker ./worker
+    - docker build -t danbo62/multi-fib-app ./fib-app
+    - docker build -t danbo62/multi-nginx ./nginx
+    - docker build -t danbo62/multi-server ./server
+    - docker build -t danbo62/multi-worker ./worker
     # Log in to danbo62 docker CLI, NOTE: user/pwd encryted and stored in my Travis-CI as Vars.
     # Travis-CI requires and escape char "\" for $VAR.
-     - echo "$DOCKER-PWD" | docker login -u "$DOCKER-ID" --password-stdin # Not secure!
+    - echo "$DOCKER-PWD" | docker login -u "$DOCKER-ID" --password-stdin # Not secure!
     # Now push images to danbo62 DockerHub; docker push danbo62/<repoName>:tagname ; using default latest
     - docker push danbo62/multi-fib-app:latest # pushing the images to Dockerhub
     - docker push danbo62/multi-nginx:latest
     - docker push danbo62/multi-server:latest
     - docker push danbo62/multi-worker:latest
 
-    deploy:
-        provider: elasticbeanstalk
-        region: us-west-1
-        app: multi-docker
-        env: MultiDocker-env
-        bucket_name: elasticbeanstalk-us-west-2-923435484303
-        bucket_path: docker-multi
-        on:
-            branch: master
-        access_key_id: $AWS_ACCESS_KEY
-        secret_access_key: $AWS_SECRET_KEY
+    # Uncomment after I rebuild AWS dev Environment
+# deploy:
+#   provider: elasticbeanstalk
+#   region: us-west-1
+#   app: multi-docker
+#   env: MultiDocker-env
+#   bucket_name: elasticbeanstalk-us-west-2-923435484303
+#   bucket_path: docker-multi
+#   on:
+#       branch: master
+#       access_key_id: $AWS_ACCESS_KEY
+#       secret_access_key: $AWS_SECRET_KEY
